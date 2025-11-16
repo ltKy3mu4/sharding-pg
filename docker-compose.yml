@@ -1,0 +1,39 @@
+services:
+
+  pg-s1:
+    container_name: pg-s1
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: acq
+    ports:
+      - "5433:5432"
+    networks:
+      - sharding
+    volumes:
+      - pg-s1-data:/var/lib/posgresql/data
+      - ./src/main/resources/db/changelog/v1/create_table.sql:/docker-entrypoint-initdb.d/01-create-tables.sql
+
+
+  pg-s2:
+    container_name: pg-s2
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: acq
+    ports:
+      - "5434:5432"
+    networks:
+      - sharding
+    volumes:
+      - pg-s2-data:/var/lib/posgresql/data
+      - ./src/main/resources/db/changelog/v1/create_table.sql:/docker-entrypoint-initdb.d/01-create-tables.sql
+
+
+volumes:
+  pg-s1-data:
+  pg-s2-data:
+networks:
+  sharding:

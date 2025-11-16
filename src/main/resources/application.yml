@@ -1,0 +1,17 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+
+  application:
+    name: sharding-test
+
+  datasource:
+    driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
+    url: jdbc:shardingsphere:classpath:sharding.yml
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  liquibase:
+    enabled: false

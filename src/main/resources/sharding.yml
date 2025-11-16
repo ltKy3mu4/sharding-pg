@@ -1,0 +1,29 @@
+dataSources:
+  ds0:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: org.postgresql.Driver
+    jdbcUrl: jdbc:postgresql://localhost:5433/acq
+    username: test
+    password: test
+  ds1:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: org.postgresql.Driver
+    jdbcUrl: jdbc:postgresql://localhost:5434/acq
+    username: test
+    password: test
+rules:
+  - !SHARDING
+    tables:
+      acq_operation:
+        actualDataNodes: ds${0..1}.acq_operation
+
+    defaultDatabaseStrategy:
+      standard:
+        shardingColumn: client_id
+        shardingAlgorithmName: database_inline
+
+    shardingAlgorithms:
+      database_inline:
+        type: INLINE
+        props:
+          algorithm-expression: ds${client_id % 2}
